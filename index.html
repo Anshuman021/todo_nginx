@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2e6e6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            border-radius: 10px; /* Adjust the border-radius as needed */
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+            margin-right: 100px; /* Add margin to create space between the two divs */
+        }
+
+        .tasks-container {
+            background-color: white;
+            border-radius: 10px; /* Adjust the border-radius as needed */
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+        }
+
+        input {
+            padding: 8px;
+            margin-right: 8px;
+            background-color: lightcyan;
+        }
+
+        button {
+            padding: 8px;
+            cursor: pointer;
+            background-color: lightgreen;
+        }
+
+        button:hover{
+            background-color: rgb(84, 186, 84);
+            border:2.5px solid brown;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .recent-task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 8px 0;
+        }
+
+        .recent-task button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .no-tasks {
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Tasks</h2>
+        <div>
+            <input type="text" id="taskInput" placeholder="Add a new task...">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <div class="tasks-container">
+        <h3>Recent Tasks</h3>
+        <div id="recentTasks" class="no-tasks">No tasks</div>
+    </div>
+
+    <script>
+        // Store tasks in an array
+        let tasks = [];
+
+        // Function to add a new task
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const recentTasksDiv = document.getElementById('recentTasks');
+
+            // Get the task value
+            const taskText = taskInput.value.trim();
+
+            // Check if the task is not empty
+            if (taskText !== '') {
+                // Add the task to the array
+                tasks.push(taskText);
+
+                // Update the recent tasks div
+                updateRecentTasks(recentTasksDiv);
+
+                // Clear the input field
+                taskInput.value = '';
+            }
+        }
+
+        // Function to update the recent tasks div
+        function updateRecentTasks(recentTasksDiv) {
+            // Clear the existing content
+            recentTasksDiv.innerHTML = '';
+
+            if (tasks.length === 0) {
+                recentTasksDiv.textContent = 'No tasks';
+                recentTasksDiv.classList.add('no-tasks');
+            } else {
+                tasks.forEach((task, index) => {
+                    const taskRow = document.createElement('div');
+                    taskRow.className = 'recent-task';
+
+                    const taskText = document.createElement('span');
+                    taskText.textContent = task;
+
+                    const removeButton = document.createElement('button');
+                    removeButton.textContent = 'Remove';
+                    removeButton.onclick = () => removeTask(index);
+
+                    taskRow.appendChild(taskText);
+                    taskRow.appendChild(removeButton);
+
+                    recentTasksDiv.appendChild(taskRow);
+                });
+
+                recentTasksDiv.classList.remove('no-tasks');
+            }
+        }
+
+        // Function to remove a task
+        function removeTask(index) {
+            // Remove the task from the array
+            tasks.splice(index, 1);
+
+            // Update the recent tasks div
+            const recentTasksDiv = document.getElementById('recentTasks');
+            updateRecentTasks(recentTasksDiv);
+        }
+    </script>
+</body>
+</html>
